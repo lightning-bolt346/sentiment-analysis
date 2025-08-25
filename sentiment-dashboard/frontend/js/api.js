@@ -1,20 +1,15 @@
-export class ApiClient {
-  constructor(baseUrl = '/api') {
-    this.baseUrl = baseUrl;
-  }
-
+window.ApiClient = {
+  baseUrl: 'http://localhost:8000',
   async analyzeText(text) {
-    try {
-      const response = await fetch(`${this.baseUrl}/analyze`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text })
-      });
-      if (!response.ok) throw new Error(`HTTP ${response.status}`);
-      return await response.json();
-    } catch (error) {
-      console.error('Analyze request failed', error);
-      return null;
+    const response = await fetch(`${this.baseUrl}/analyze`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ text })
+    });
+    if (!response.ok) {
+      const body = await response.text();
+      throw new Error(`HTTP ${response.status}: ${body}`);
     }
+    return response.json();
   }
-}
+};

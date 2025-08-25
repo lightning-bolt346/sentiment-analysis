@@ -1,23 +1,25 @@
-from fastapi import APIRouter
-from pydantic import BaseModel
-from ..models.sentiment_analyzer import SentimentAnalyzer
-from ..models.phrase_extractor import PhraseExtractor
+from fastapi import APIRouter, Depends
+from .schemas import AnalyzeRequest, AnalyzeResponse, SentimentResult
+from models.sentiment_analyzer import SentimentAnalyzer
+from models.phrase_extractor import PhraseExtractor
 
 router = APIRouter()
 
-class AnalyzeRequest(BaseModel):
-    text: str
 
-class AnalyzeResponse(BaseModel):
-    label: str
-    score: float
-    key_phrases: list[str]
+def get_analyzer() -> SentimentAnalyzer:
+    return SentimentAnalyzer()
 
-_analyzer = SentimentAnalyzer()
-_extractor = PhraseExtractor()
+
+def get_phrase_extractor() -> PhraseExtractor:
+    return PhraseExtractor()
+
 
 @router.post("/analyze", response_model=AnalyzeResponse)
-async def analyze(request: AnalyzeRequest) -> AnalyzeResponse:
-    label, score = _analyzer.predict(request.text)
-    key_phrases = _extractor.extract(request.text)
-    return AnalyzeResponse(label=label, score=score, key_phrases=key_phrases)
+async def analyze(
+    payload: AnalyzeRequest,
+    analyzer: SentimentAnalyzer = Depends(get_analyzer),
+    extractor: PhraseExtractor = Depends(get_phrase_extractor),
+):
+    score, label = analyzer.analyze(payload.text)
+    phrases = extractor.extract(payload.text)
+    return AnalyzeResponse(sentiment=SentimentResult(score=score, label=label), keyPhrases=phrases)

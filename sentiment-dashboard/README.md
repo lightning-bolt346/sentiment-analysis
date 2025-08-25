@@ -1,29 +1,34 @@
-# Sentiment Analysis Dashboard
+# Sentiment Dashboard
 
 A minimal full-stack scaffold for a sentiment analysis dashboard.
 
 ## Structure
 
-- frontend: static UI with simple modules
-- backend: FastAPI API with placeholder analyzer and extractor
+- `frontend/` static client (HTML/CSS/JS)
+- `backend/` FastAPI server exposing `/analyze`
 
-## Quickstart
-
-### Backend
+## Run backend
 
 ```bash
+cd backend
 python -m venv .venv
 source .venv/bin/activate
-pip install -r backend/requirements.txt
-uvicorn backend.main:app --reload
+pip install -r requirements.txt
+uvicorn main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-### Frontend
+## Open frontend
 
-Serve `frontend/` via any static server (or configure FastAPI static mount later).
+Open `frontend/index.html` in a browser (use a static server if needed).
+
+On Linux/macOS you can run from repo root:
 
 ```bash
-python -m http.server 8001 --directory frontend
+python -m http.server 5173 --directory frontend
 ```
 
-Then open `http://localhost:8001` and set API base to `http://localhost:8000/api` if needed.
+Then visit `http://localhost:5173`.
+
+## API
+
+- `POST /analyze` with body `{ "text": "string" }` returns sentiment and key phrases.

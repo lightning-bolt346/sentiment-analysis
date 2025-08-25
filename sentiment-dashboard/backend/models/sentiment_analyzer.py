@@ -1,13 +1,16 @@
+from typing import Tuple
+
 class SentimentAnalyzer:
-    """Very simple placeholder sentiment analyzer.
+    POSITIVE_WORDS = {"good", "great", "excellent", "amazing", "love", "like", "happy", "wonderful", "positive"}
+    NEGATIVE_WORDS = {"bad", "terrible", "awful", "hate", "dislike", "sad", "horrible", "negative"}
 
-    Replace with a real model or pipeline in the future.
-    """
-
-    def predict(self, text: str) -> tuple[str, float]:
-        text_lower = text.lower()
-        if any(word in text_lower for word in ["love", "great", "awesome", "good", "happy"]):
-            return ("positive", 0.9)
-        if any(word in text_lower for word in ["hate", "bad", "terrible", "awful", "sad"]):
-            return ("negative", 0.9)
-        return ("neutral", 0.5)
+    def analyze(self, text: str) -> Tuple[float, str]:
+        if not text:
+            return 0.0, "neutral"
+        words = [w.strip(".,!?;:").lower() for w in text.split()]
+        pos = sum(1 for w in words if w in self.POSITIVE_WORDS)
+        neg = sum(1 for w in words if w in self.NEGATIVE_WORDS)
+        total = pos + neg
+        score = 0.0 if total == 0 else (pos - neg) / total
+        label = "positive" if score > 0.2 else "negative" if score < -0.2 else "neutral"
+        return float(score), label
