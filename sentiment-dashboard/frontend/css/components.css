@@ -1,0 +1,12 @@
+.button {
+  background: var(--primary);
+  color: #0b1020;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.button.secondary { background: var(--accent); }
+.button.danger { background: var(--danger); }
+.card { border-radius: 10px; border: 1px solid rgba(255,255,255,0.06); padding: 12px; }
+.grid { display: grid; gap: 12px; }
