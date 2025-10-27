@@ -1,0 +1,15 @@
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #cbd5e1;
+  background: #ffffff;
+  color: #0f172a;
+  cursor: pointer;
+}
+.btn.primary { background: #0ea5e9; color: #ffffff; border-color: #0ea5e9; }
+.input { width: 100%; padding: 8px 10px; border: 1px solid #cbd5e1; border-radius: 6px; }
+.card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 12px; background: #fff; }
+.grid { display: grid; gap: 12px; }
